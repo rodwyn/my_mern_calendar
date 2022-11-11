@@ -6,6 +6,7 @@ import { Navbar } from "../components/Navbar"
 import { getMessagesES, localizer } from '../../helpers';
 import { CalendarEvent } from '../components/CalendarEvent';
 import { useState } from 'react';
+import { CalendarModal } from '../components/CalendarModal';
 
 const events = [{
   title: 'Boss Birthday',
@@ -60,6 +61,8 @@ export const CalendarPage = () => {
         onSelectEvent={ onSelect }
         onView={onViewChanged}
       />
+
+      <CalendarModal />
     </>
   )
 }
