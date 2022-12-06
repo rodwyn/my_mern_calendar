@@ -16,7 +16,7 @@ const registerFormFields = {
 };
 
 export const LoginPage = () => {
-    const { startLogin, errorMessage } = useAuthStore();
+    const { startLogin, startRegistration, errorMessage } = useAuthStore();
     const { loginEmail, loginPassword, onInputChange:onLoginInputChange} =useForm(loginFormFields);
     const { registerEmail, registerName, registerPassword, registerPasswordConfirm, onInputChange:onRegisterInputChange } = useForm(registerFormFields);
 
@@ -27,6 +27,14 @@ export const LoginPage = () => {
 
     const registerSubmit = (event) => {
         event.preventDefault();
+
+        if ( registerPassword !== registerPasswordConfirm) {
+            Swal.fire('Registration error', 'Passwords do not match', 'error');
+            return;
+        }
+
+        startRegistration({ email: registerEmail, name: registerName, password: registerPassword })
+
         console.log({ registerEmail, registerName, registerPassword, registerPasswordConfirm});
     };
 

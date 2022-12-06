@@ -8,6 +8,7 @@ export const useAuthStore = () => {
 
   const startLogin = async({ email, password }) => {
     dispatch( onChecking() );
+
     try {
       const { data } = await calendarAPI.post('/auth', { email, password });
       localStorage.setItem('token', data.token);
@@ -22,6 +23,24 @@ export const useAuthStore = () => {
     }
   };
 
+  const startRegistration = async( { email, password, name }) => {
+    dispatch( onChecking() );
+
+    try {
+      const { data } = await calendarAPI.post('/auth/new', { email, password, name }); 
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('token_init_date', new Date().getTime());
+      dispatch( onLogin({ name: data.name, uid: data.uid }) );
+    } catch (error) {
+      const { response } = error;
+
+      dispatch( onLogout(response.data.msg) )
+      setTimeout(() => {
+        dispatch( clearErrorMessage() )
+      }, 10);
+    }
+  };
+
   return {
     //* Properties
     status,
@@ -29,6 +48,7 @@ export const useAuthStore = () => {
     errorMessage,
 
     //* Methods
-    startLogin
+    startLogin,
+    startRegistration
   }
 }
